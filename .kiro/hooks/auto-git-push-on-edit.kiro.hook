@@ -8,6 +8,6 @@
   },
   "then": {
     "type": "runCommand",
-    "command": "cd /d \"c:\\Users\\MSI Gaming\\Desktop\\codechay\" && git add -A && (git diff --cached --quiet || git commit -m \"Auto-commit: agent edits\") && git pull --rebase && git push"
+    "command": "cd /d \"d:\\review-app\\review_app\" && git add -A && (git diff --cached --quiet || git commit -m \"Auto-commit: agent edits\") && git pull --rebase && git push"
   }
 }
