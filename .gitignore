@@ -1,0 +1,19 @@
+# Build artifacts
+reviewApi/bin/
+reviewApi/obj/
+reviewApi/.vs/
+reviewApi/ffmpeg/
+
+# Angular cache
+review-ui/.angular/
+
+# Node modules
+review-ui/node_modules/
+
+# Environment files
+*.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
