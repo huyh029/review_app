@@ -1,0 +1,3 @@
+#Copy thu muc qlvb-theme vao docker
+docker cp qlvb-theme/ keycloak:/opt/keycloak/themes/qlvb-theme
+docker exec -it keycloak ls -R /opt/keycloak/themes/qlvb-theme

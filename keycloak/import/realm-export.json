@@ -1,0 +1,43 @@
+{
+  "realm": "vbdh-realm",
+  "enabled": true,
+  "loginTheme": "qlvb-theme",
+  "accountTheme": "qlvb-theme",
+  "emailTheme": "qlvb-theme",
+  "adminTheme": "keycloak",
+  "clients": [
+    {
+      "clientId": "vbdh-client",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "rootUrl": "https://h05/",
+      "baseUrl": "/",
+      "redirectUris": [
+        "https://*.h05.bca/*"
+      ],
+      "secret": "cS7whhY0aVyaLn79tiA8iDnfIrMswUJn"
+    },
+    {
+      "clientId": "sohoa-client",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "rootUrl": "https://h05/",
+      "baseUrl": "/",
+      "redirectUris": [
+        "https://*.h05.bca/*"
+      ],
+      "secret": "cS7whhY0aVyaLn79tiA8iDnfIrMswUJn"
+    }
+  ],
+  "users": []
+}
