@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Auto Git Push After Edit",
+  "description": "Automatically stages, commits, and pushes all changes to git after the agent stops working",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "cd /d d:\\review-app\\review_app && git add -A && git diff --cached --quiet || git commit -m \"Auto-commit: agent edits\" && git push"
+  }
+}
