@@ -5,7 +5,7 @@
 """
 import urllib.request, urllib.parse, json, base64
 
-KC     = "http://localhost:8080"
+KC     = "http://192.168.1.6:8080"
 REALM  = "vbdh-realm"
 CLIENT = "vbdh-client"
 SECRET = "cS7whhY0aVyaLn79tiA8iDnfIrMswUJn"

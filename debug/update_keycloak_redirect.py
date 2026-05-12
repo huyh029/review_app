@@ -1,9 +1,9 @@
 """
-Cập nhật redirectUris của vbdh-client để cho phép localhost:4200/callback
+Cập nhật redirectUris của vbdh-client để cho phép 192.168.1.6:4200/callback
 """
 import urllib.request, urllib.parse, json
 
-KC = "http://localhost:8080"
+KC = "http://192.168.1.6:8080"
 REALM = "vbdh-realm"
 CLIENT_ID = "vbdh-client"
 
@@ -44,10 +44,10 @@ print(f"✅ Client UUID: {cid}")
 
 # Cập nhật redirectUris
 new_uris = list(set(client.get("redirectUris", []) + [
-    "http://localhost:4200/*",
-    "http://localhost:4200/callback",
+    "http://192.168.1.6:4200/*",
+    "http://192.168.1.6:4200/callback",
 ]))
-new_origins = list(set(client.get("webOrigins", []) + ["http://localhost:4200"]))
+new_origins = list(set(client.get("webOrigins", []) + ["http://192.168.1.6:4200"]))
 
 client["redirectUris"] = new_uris
 client["webOrigins"]   = new_origins

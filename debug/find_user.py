@@ -4,8 +4,8 @@ Tìm user 17fd1ca4-8b2d-4073-ab2a-eedafb14d900 trong DB (qua API) và Keycloak
 import urllib.request, urllib.parse, json, ssl, base64
 
 TARGET_ID = "17fd1ca4-8b2d-4073-ab2a-eedafb14d900"
-API       = "https://localhost:7146"
-KC        = "http://localhost:8080"
+API       = "https://192.168.1.6:7146"
+KC        = "http://192.168.1.6:8080"
 REALM     = "vbdh-realm"
 CLIENT    = "vbdh-client"
 SECRET    = "cS7whhY0aVyaLn79tiA8iDnfIrMswUJn"

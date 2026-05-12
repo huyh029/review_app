@@ -3,7 +3,7 @@ Dump toàn bộ Users, Departments (OrganizeCode), Roles (UserRoleCode) từ Key
 """
 import urllib.request, urllib.parse, json, base64
 
-KC    = "http://localhost:8080"
+KC    = "http://192.168.1.6:8080"
 REALM = "vbdh-realm"
 
 def post_form(url, data):

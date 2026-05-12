@@ -6,7 +6,7 @@ import urllib.parse
 import json
 import sys
 
-KEYCLOAK_URL = "http://localhost:8080"
+KEYCLOAK_URL = "http://192.168.1.6:8080"
 REALM = "vbdh-realm"
 CLIENT_ID = "vbdh-client"
 CLIENT_SECRET = "cS7whhY0aVyaLn79tiA8iDnfIrMswUJn"

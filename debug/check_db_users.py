@@ -3,7 +3,7 @@ Kiểm tra DB có user nào không, và gọi SetBaseData nếu cần
 """
 import urllib.request, urllib.parse, json, ssl
 
-API = "https://localhost:7146"
+API = "https://192.168.1.6:7146"
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
@@ -31,7 +31,7 @@ print(f"  Response: {body[:200]}")
 
 # Gọi lại /me sau khi có data
 import base64
-KC     = "http://localhost:8080"
+KC     = "http://192.168.1.6:8080"
 REALM  = "vbdh-realm"
 CLIENT = "vbdh-client"
 SECRET = "cS7whhY0aVyaLn79tiA8iDnfIrMswUJn"

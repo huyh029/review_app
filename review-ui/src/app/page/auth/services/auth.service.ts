@@ -23,7 +23,7 @@ export interface LoginResponse {
 }
 
 // Keycloak config — phải khớp với realm-export.json
-const KC_URL      = 'http://localhost:8080';
+const KC_URL      = 'http://192.168.1.6:8080';
 const KC_REALM    = 'vbdh-realm';
 const KC_CLIENT   = 'vbdh-client';
 const REDIRECT_URI = `${window.location.origin}/callback`;

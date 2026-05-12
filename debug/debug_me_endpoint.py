@@ -3,11 +3,11 @@ Debug /api/auth/me — xem token claims vs DB users
 """
 import urllib.request, urllib.parse, json, base64, ssl
 
-KC     = "http://localhost:8080"
+KC     = "http://192.168.1.6:8080"
 REALM  = "vbdh-realm"
 CLIENT = "vbdh-client"
 SECRET = "cS7whhY0aVyaLn79tiA8iDnfIrMswUJn"
-API    = "https://localhost:7146"
+API    = "https://192.168.1.6:7146"
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False

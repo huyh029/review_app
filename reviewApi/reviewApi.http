@@ -1,4 +1,4 @@
-@reviewApi_HostAddress = http://localhost:5104
+@reviewApi_HostAddress = http://192.168.1.6:5104
 
 GET {{reviewApi_HostAddress}}/weatherforecast/
 Accept: application/json
