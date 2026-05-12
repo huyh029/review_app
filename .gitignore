@@ -3,6 +3,7 @@ reviewApi/bin/
 reviewApi/obj/
 reviewApi/.vs/
 reviewApi/ffmpeg/
+reviewApi/wwwroot/uploads/
 
 # Angular cache
 review-ui/.angular/
