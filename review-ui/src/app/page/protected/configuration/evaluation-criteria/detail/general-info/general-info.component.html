@@ -1,0 +1,65 @@
+<div class="form-container">
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="name">Tên bộ tiêu chí <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name" 
+        class="form-input"
+        placeholder="annn"
+        (change)="onNameChange($event.target.value)"
+      />
+      <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="error-message">
+        Tên bộ tiêu chí là bắt buộc
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Đối tượng áp dụng <span class="required">*</span></label>
+      <app-dropdown-checkbox-multi 
+        [options]="applicableObjectOptions"
+        [selectedValues]="selectedObjects"
+        placeholder="Chọn đối tượng áp dụng..."
+        (selectionChange)="onApplicableObjectChange($event)"
+      ></app-dropdown-checkbox-multi>
+      <div *ngIf="form.get('applicableObject')?.invalid && form.get('applicableObject')?.touched" class="error-message">
+        Đối tượng áp dụng là bắt buộc
+      </div>
+    </div>
+  </form>
+
+  <div class="time-period-section">
+    <label class="section-label">Thời gian áp dụng <span class="required">*</span></label>
+    <div class="time-period-row">
+      <div class="form-group">
+        <app-dropdown-checkbox-multi 
+          [options]="yearOptions"
+          [selectedValues]="selectedYears"
+          placeholder="Chọn năm..."
+          (selectionChange)="onYearChange($event)"
+        ></app-dropdown-checkbox-multi>
+      </div>
+
+      <div class="form-group">
+        <app-dropdown-checkbox-multi 
+          [options]="periodOptions"
+          [selectedValues]="selectedPeriods"
+          [showSelectAll]="true"
+          [columns]="2"
+          placeholder="Chọn tháng..."
+          (selectionChange)="onPeriodChange($event)"
+        ></app-dropdown-checkbox-multi>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Criteria Table Component -->
+<app-criteria-table 
+  [items]="criteriaItems"
+  (addItem)="onAddCriteria()"
+  (editItem)="onEditCriteria($event)"
+  (deleteItem)="onDeleteCriteria($event)"
+  (updateItem)="onUpdateCriteria($event)"
+></app-criteria-table>

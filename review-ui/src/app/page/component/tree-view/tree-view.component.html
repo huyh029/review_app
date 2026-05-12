@@ -1,0 +1,59 @@
+<div class="tree-view-container tree-scroll-container">
+  <!-- Zoom Controls -->
+  <div *ngIf="showZoom" class="flex items-center gap-2 mb-4 p-4 bg-white rounded-lg shadow">
+    <button 
+      (click)="zoomOut()"
+      class="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+      title="Phóng to">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"></path>
+      </svg>
+    </button>
+    
+    <span class="text-sm font-medium text-gray-700 w-12 text-center">{{ zoomLevel }}%</span>
+    
+    <button 
+      (click)="zoomIn()"
+      class="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+      title="Thu nhỏ">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path>
+      </svg>
+    </button>
+    
+    <button 
+      (click)="resetZoom()"
+      class="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+      title="Đặt lại">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Tree View -->
+  <div class="tree-scroll-container bg-white rounded-lg shadow p-4" [style]="getZoomStyle()" [style.min-width]="getTreeMinWidth()">
+    <!-- Table Header -->
+    <table class="tree-header-table">
+      <thead>
+        <tr>
+          <th class="header-col-user">{{ headers[0] || 'TÊN ĐƠN VỊ/ CÁ NHÂN' }}</th>
+          <th *ngFor="let header of headers.slice(1)" class="header-col-empty">{{ header }}</th>
+        </tr>
+      </thead>
+    </table>
+    
+    <!-- Tree Content -->
+    <div class="tree">
+      <ng-container *ngFor="let node of data">
+        <app-tree-node 
+          [node]="node"
+          [emptyColumnCount]="emptyColumnCount"
+          [headers]="headers"
+          [evaluationObjectHeaders]="evaluationObjectHeaders"
+          (checkboxChange)="setCheckboxValue($event.userId, $event.evaluationObjectCode, $event.isChecked)">
+        </app-tree-node>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+/* Custom checkbox styling */
+input[type="checkbox"] {
+  accent-color: #276100;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #276100;
+  border-color: #276100;
+}
+
+input[type="checkbox"]:focus {
+  outline-color: #276100;
+}
+
+/* Table wrapper with flexbox */
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Table content area - grows to fill available space */
+.table-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Pagination footer - stays at bottom */
+.pagination-footer {
+  flex-shrink: 0;
+  border-top: 1px solid #d1d5db;
+}

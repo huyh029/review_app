@@ -1,0 +1,28 @@
+<div class="p-6">
+  <div class="flex gap-2 mb-6 border-b border-gray-200 relative">
+    <button 
+      class="px-4 py-2 font-bold transition-colors relative text-[#276100]"
+      [class.text-\[\#276100\]]="activeTab === 'configuration'"
+      [class.text-gray-600]="activeTab !== 'configuration'"
+      (click)="selectTab('configuration')">
+      Cấu hình
+      <span 
+        *ngIf="activeTab === 'configuration'"
+        class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#276100] tab-underline"></span>
+    </button>
+    <button 
+      class="px-4 py-2 font-bold transition-colors relative text-[#276100]"
+      [class.text-\[\#276100\]]="activeTab === 'role'"
+      [class.text-gray-600]="activeTab !== 'role'"
+      (click)="selectTab('role')">
+      Vai trò
+      <span 
+        *ngIf="activeTab === 'role'"
+        class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#276100] tab-underline"></span>
+    </button>
+  </div>
+
+  <div class="tab-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="dropdown-container" #dropdownContainer>
+  <button 
+    type="button"
+    class="dropdown-toggle"
+    (click)="toggleDropdown()"
+    [class.open]="isDropdownOpen"
+  >
+    <span>{{ getSelectedNames() || placeholder }}</span>
+    <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+
+  <div class="dropdown-menu" [hidden]="!isDropdownOpen">
+    <div *ngIf="showSelectAll" class="dropdown-select-all">
+      <div class="dropdown-item">
+        <input 
+          type="checkbox" 
+          id="option-all"
+          [checked]="isAllSelected()"
+          (change)="toggleOption(options[0])"
+          class="checkbox-input"
+        />
+        <label for="option-all" class="checkbox-label">{{ options[0]?.name }}</label>
+      </div>
+    </div>
+    
+    <div class="dropdown-items-grid" [style]="getGridStyle()">
+      <div class="dropdown-item" *ngFor="let option of getOptionsToSelect()">
+        <input 
+          type="checkbox" 
+          [id]="'option-' + option.id"
+          [checked]="isSelected(option.id)"
+          (change)="toggleOption(option)"
+          class="checkbox-input"
+        />
+        <label [for]="'option-' + option.id" class="checkbox-label">{{ option.name }}</label>
+      </div>
+    </div>
+  </div>
+</div>

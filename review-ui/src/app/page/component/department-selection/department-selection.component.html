@@ -1,0 +1,51 @@
+<div *ngIf="isOpen" class="fixed inset-0 z-50">
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-50" (click)="onClose()"></div>
+  
+  <!-- Sidebar -->
+  <div class="fixed top-0 right-0 h-full w-1/2 bg-white shadow-2xl z-50 flex flex-col animate-slide-in-right">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-5 border-b border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800">Lựa chọn phòng ban áp dụng</h3>
+      <button 
+        type="button"
+        (click)="onClose()"
+        class="text-gray-400 hover:text-gray-600">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="flex-grow p-6 overflow-y-auto">
+      <ul class="space-y-2">
+        <ng-container *ngFor="let dept of departments">
+          <li>
+            <app-department-tree-node 
+              [node]="dept"
+              [level]="0"
+              (nodeToggleExpand)="toggleExpand($event)">
+            </app-department-tree-node>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex-shrink-0 flex justify-end items-center p-4 border-t bg-gray-50 space-x-3">
+      <button 
+        type="button"
+        (click)="onClose()"
+        class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white rounded-lg border hover:bg-gray-100">
+        Hủy
+      </button>
+      <button 
+        type="button"
+        (click)="onConfirm()"
+        class="text-white bg-[#276100] hover:bg-[#1e4900] font-medium rounded-lg text-sm px-5 py-2.5">
+        Xác nhận
+      </button>
+    </div>
+  </div>
+</div>

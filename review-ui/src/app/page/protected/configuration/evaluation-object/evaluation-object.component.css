@@ -1,0 +1,17 @@
+.tab-content {
+  padding: 20px;
+}
+
+.tab-underline {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+

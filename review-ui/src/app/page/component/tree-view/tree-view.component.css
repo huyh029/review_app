@@ -1,0 +1,52 @@
+.tree-view-container {
+  width: 100%;
+}
+
+.tree-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.tree-header-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  border: 1px solid #d1d5db;
+  margin-bottom: 0;
+  background-color: #f9fafb;
+}
+
+.tree-header-table thead tr {
+  border-bottom: 1px solid #d1d5db;
+}
+
+.tree-header-table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: #1f2937;
+  border-right: 1px solid #d1d5db;
+}
+
+.tree-header-table th:last-child {
+  border-right: none;
+}
+
+.header-col-user {
+  flex: 1;
+  text-align: left;
+}
+
+.header-col-empty {
+  width: 100px;
+  min-width: 100px;
+  text-align: center;
+  vertical-align: middle;
+}

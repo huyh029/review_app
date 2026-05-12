@@ -1,0 +1,26 @@
+<div class="dropdown-container" #dropdownContainer>
+  <button 
+    type="button"
+    class="dropdown-toggle"
+    (click)="toggleDropdown()"
+    [class.open]="isDropdownOpen"
+  >
+    <span>{{ getSelectedName() }}</span>
+    <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+
+  <div class="dropdown-menu" [hidden]="!isDropdownOpen">
+    <div class="dropdown-item" *ngFor="let option of options">
+      <input 
+        type="checkbox" 
+        [id]="'option-' + option.id"
+        [checked]="isSelected(option)"
+        (change)="selectOption(option)"
+        class="checkbox-input"
+      />
+      <label [for]="'option-' + option.id" class="checkbox-label">{{ option.name }}</label>
+    </div>
+  </div>
+</div>

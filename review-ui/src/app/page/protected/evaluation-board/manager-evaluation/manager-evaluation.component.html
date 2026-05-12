@@ -1,0 +1,23 @@
+<div>
+  <app-filter 
+    [fields]="filterFields"
+    [searchPlaceholder]="'Tìm kiếm theo tên, đơn vị...'"
+    [searchMode]="'click'"
+    (filterChange)="onFilterChange($event)">
+  </app-filter>
+
+  <!-- Title and Actions -->
+  <div class="flex items-center justify-between mt-6 mb-4">
+    <h2 class="text-lg font-semibold text-gray-800">Danh sách - Đánh giá</h2>
+    <app-download-button></app-download-button>
+  </div>
+
+  <!-- Table -->
+  <app-table
+    [columns]="columns"
+    [response]="tableResponse"
+    [enableMultiSelect]="enableMultiSelect"
+    (selectionChange)="onSelectionChange($event)"
+    (rowActionClick)="onRowActionClick($event)">
+  </app-table>
+</div>

@@ -1,0 +1,42 @@
+/* Evaluation Criteria Detail Component Styles */
+
+:host {
+  display: block;
+}
+
+/* Header Styles */
+h1 {
+  margin: 0;
+}
+
+/* Button Styles */
+button {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+button:hover {
+  color: #374151;
+}
+
+/* Tab Underline Animation */
+.tab-underline {
+  animation: slideUnderline 0.3s ease-in-out;
+  transform-origin: left;
+}
+
+@keyframes slideUnderline {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+/* Tab Content Styles */
+.bg-white {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

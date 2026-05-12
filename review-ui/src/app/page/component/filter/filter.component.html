@@ -1,0 +1,74 @@
+<div class="bg-white print:hidden ">
+  <div [ngClass]="'flex flex-wrap ' + gap">
+    <!-- Search Row -->
+    <div class="flex flex-col">
+      <label *ngIf="showLabel" class="text-sm font-medium text-gray-700 mb-2">Tìm kiếm</label>
+      <div class="relative w-80">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input
+          type="text"
+          [ngModel]="filterCriteria['search']"
+          (ngModelChange)="filterCriteria['search'] = $event; searchMode === 'realtime' && onFilterChange()"
+          [placeholder]="searchPlaceholder"
+          class="w-full h-[42px] pl-10 pr-3 py-2 rounded-md bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-[#276100] sm:text-sm transition-all"
+        />
+      </div>
+    </div>
+
+    <!-- Filters and Actions Row -->
+      <!-- Filter Fields -->
+      <ng-container *ngFor="let field of fields">
+        <!-- Text Input Field -->
+        <div *ngIf="field.type === 'text'" class="flex flex-col">
+          <label *ngIf="showLabel" class="text-sm font-medium text-gray-700 mb-2">{{ field.label }}</label>
+          <input
+            type="text"
+            [ngModel]="filterCriteria[field.key]"
+            (ngModelChange)="filterCriteria[field.key] = $event; searchMode === 'realtime' && onFilterChange()"
+            [placeholder]="field.placeholder || 'Nhập...'"
+            class="h-[42px] px-3 py-2 rounded-md bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-[#276100] sm:text-sm transition-all w-48"
+          />
+        </div>
+
+        <!-- Select Field -->
+        <div *ngIf="field.type === 'select'" class="flex flex-col">
+          <label *ngIf="showLabel" class="text-sm font-medium text-gray-700 mb-2">{{ field.label }}</label>
+          <div class="w-48">
+            <app-select
+              [options]="getOptions(field)"
+              [ngModel]="filterCriteria[field.key]"
+              (ngModelChange)="filterCriteria[field.key] = $event; searchMode === 'realtime' && onFilterChange()"
+              direction="down"
+            ></app-select>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col" [class.justify-end]="!showLabel">
+        <label *ngIf="showLabel" class="text-sm font-medium text-gray-700 mb-2">&nbsp;</label>
+        <div class="flex gap-2">
+          <button
+            (click)="onFilterChange()"
+            title="Tìm kiếm"
+            class="flex items-center justify-center w-12 h-[42px] bg-[#276100] text-white rounded hover:bg-[#1f4a00] transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </button>
+          <button
+            (click)="resetFilter()"
+            title="Xóa bộ lọc"
+            class="flex items-center justify-center w-12 h-[42px] bg-gray-200 text-gray-600 rounded hover:bg-gray-300 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+  </div>
+</div>

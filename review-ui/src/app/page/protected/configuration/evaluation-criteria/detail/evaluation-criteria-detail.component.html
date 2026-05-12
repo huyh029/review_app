@@ -1,0 +1,86 @@
+<div class="p-6">
+  <!-- Header with Title and Action Buttons -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-4">
+      <button
+        (click)="onBack()"
+        class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        title="Quay lại">
+        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      <h1 class="text-2xl font-bold text-gray-800">{{ title }}</h1>
+    </div>
+
+    <div class="flex gap-3">
+      <button
+        (click)="onCancel()"
+        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+        Hủy
+      </button>
+
+      <button
+        *ngIf="isEditMode"
+        (click)="onDelete()"
+        class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+        Xóa
+      </button>
+
+      <button
+        (click)="onSave()"
+        [disabled]="saving"
+        class="px-4 py-2 bg-[#276100] text-white rounded-lg font-medium hover:bg-[#1f4a00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        {{ saving ? 'Đang lưu...' : 'Lưu' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex gap-2 mb-6 border-b border-gray-200 relative">
+    <button 
+      *ngFor="let tab of tabs"
+      (click)="selectTab(tab.type)"
+      [class.text-[#276100]]="activeTab === tab.type"
+      [class.text-gray-600]="activeTab !== tab.type"
+      class="px-4 py-2 font-medium transition-colors relative">
+      {{ tab.label }}
+      <span 
+        *ngIf="activeTab === tab.type"
+        class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#276100] tab-underline">
+      </span>
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="bg-white rounded-lg">
+    <!-- General Info Tab -->
+    <div *ngIf="activeTab === 'general'">
+      <app-general-info 
+        [criteriaSetName]="criteriaSetName"
+        [selectedObjects]="selectedObjects"
+        [selectedYears]="selectedYears"
+        [selectedPeriods]="selectedPeriods"
+        [criteriaItems]="criteriaItems"
+        (criteriaSetNameChange)="onCriteriaSetNameChange($event)"
+        (selectedObjectsChange)="onApplicableObjectChange($event)"
+        (selectedYearsChange)="onSelectedYearsChange($event)"
+        (selectedPeriodsChange)="onSelectedPeriodsChange($event)"
+        (criteriaItemsChange)="onCriteriaItemsChange($event)"
+      ></app-general-info>
+    </div>
+
+    <!-- Criteria Tab -->
+    <div *ngIf="activeTab === 'criteria'">
+      <app-criteria-classification 
+        [classifications]="classifications"
+        (classificationsChange)="onClassificationChange($event)"
+      ></app-criteria-classification>
+    </div>
+
+    <!-- Template Tab -->
+    <div *ngIf="activeTab === 'template'">
+      <app-template></app-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="space-y-4">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h3 class="text-sm font-semibold text-gray-800">{{ title }}</h3>
+      <p class="text-xs text-gray-500">{{ subtitle }}</p>
+    </div>
+    <button 
+      type="button"
+      (click)="onAddCriteria()"
+      class="px-4 py-2 border border-[#276100] text-[#276100] rounded-lg hover:bg-[#276100] hover:text-white transition-colors font-medium text-sm">
+      Thêm mới
+    </button>
+  </div>
+
+  <!-- Tree nodes -->
+  <div class="border border-gray-300 rounded-lg p-4 space-y-2">
+    <div *ngIf="data.length === 0" class="text-gray-500 text-sm py-4 text-center">
+      Chưa có tiêu chí đánh giá
+    </div>
+    
+    <div *ngFor="let node of data" class="tree-node">
+      <div class="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer group">
+        <button 
+          type="button"
+          (click)="toggleNode(node)"
+          class="flex-shrink-0 w-5 h-5 flex items-center justify-center text-gray-600 hover:text-gray-800"
+          *ngIf="node.children && node.children.length > 0">
+          <svg class="w-4 h-4 transition-transform" [class.rotate-90]="node.expanded" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+        <div *ngIf="!node.children || node.children.length === 0" class="w-5"></div>
+        
+        <span class="flex-1 text-sm text-gray-800">{{ node.name }}</span>
+        
+        <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button 
+            type="button"
+            (click)="onEditCriteria(node)"
+            class="p-1 text-blue-600 hover:bg-blue-50 rounded"
+            title="Chỉnh sửa">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+          </button>
+          <button 
+            type="button"
+            (click)="onDeleteCriteria(node)"
+            class="p-1 text-red-600 hover:bg-red-50 rounded"
+            title="Xóa">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Children -->
+      <div *ngIf="node.expanded && node.children && node.children.length > 0" class="ml-6 space-y-1">
+        <div *ngFor="let child of node.children" class="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer group">
+          <div class="w-5"></div>
+          <span class="flex-1 text-sm text-gray-700">{{ child.name }}</span>
+          
+          <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button 
+              type="button"
+              (click)="onEditCriteria(child)"
+              class="p-1 text-blue-600 hover:bg-blue-50 rounded"
+              title="Chỉnh sửa">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+            </button>
+            <button 
+              type="button"
+              (click)="onDeleteCriteria(child)"
+              class="p-1 text-red-600 hover:bg-red-50 rounded"
+              title="Xóa">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

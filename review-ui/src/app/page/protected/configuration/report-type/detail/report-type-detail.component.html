@@ -1,0 +1,86 @@
+<div class="report-type-detail-section">
+  <div class="detail-header">
+    <div class="header-left">
+      <button class="btn-back-icon" title="Quay lại" (click)="onCancel()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      <h2>{{ pageTitle }}</h2>
+    </div>
+    <div class="header-actions">
+      <button class="btn-cancel" (click)="onCancel()">Hủy</button>
+      <button *ngIf="isEditMode" class="btn-delete" (click)="onDelete()">Xóa</button>
+      <button class="btn-save" (click)="onSave()">{{ isEditMode ? 'Cập nhật' : 'Lưu' }}</button>
+    </div>
+  </div>
+
+  <div class="form-content">
+    <div class="form-section">
+      <h3 class="section-title">Thông tin cơ bản</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label form-label-bold">Mã loại báo cáo <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="code" [readonly]="isEditMode" class="form-input"
+            [class.bg-gray-200]="isEditMode" placeholder="Nhập mã loại báo cáo" />
+        </div>
+        <div class="form-group">
+          <label class="form-label form-label-bold">Tên loại báo cáo <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="name" class="form-input" placeholder="Nhập tên loại báo cáo" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="section-title">Thời gian áp dụng <span class="required">*</span></h3>
+      <div class="form-row">
+        <div class="form-group">
+          <app-dropdown-checkbox-multi
+            [options]="yearOptions"
+            [selectedValues]="selectedYears"
+            [columns]="1"
+            placeholder="Chọn năm"
+            (selectionChange)="onYearChange($event)">
+          </app-dropdown-checkbox-multi>
+        </div>
+        <div class="form-group">
+          <app-dropdown-checkbox-multi
+            [options]="monthOptions"
+            [selectedValues]="selectedMonths"
+            [columns]="2"
+            [showSelectAll]="true"
+            placeholder="Chọn tháng"
+            (selectionChange)="onMonthChange($event)">
+          </app-dropdown-checkbox-multi>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="section-title">Tiêu chí áp dụng <span class="required">*</span></h3>
+      <div class="form-group form-group-full">
+        <app-dropdown-checkbox-multi
+          [options]="criteriaOptions"
+          [selectedValues]="selectedCriteria"
+          [columns]="1"
+          placeholder="Chọn tiêu chí"
+          (selectionChange)="onCriteriaChange($event)">
+        </app-dropdown-checkbox-multi>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="section-title">Trạng thái <span class="required">*</span></h3>
+      <div class="status-box">
+        <label class="radio-label">
+          <input type="radio" name="status" value="active" [(ngModel)]="status" />
+          <span>Kích hoạt</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="status" value="inactive" [(ngModel)]="status" />
+          <span>Khóa</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

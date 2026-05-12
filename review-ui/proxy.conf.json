@@ -1,0 +1,21 @@
+{
+  "/api": {
+    "target": "https://localhost:7146",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": "/api"
+    }
+  },
+  "/api/page/evaluation-board/comments/files": {
+    "target": "https://localhost:7146",
+    "secure": false,
+    "changeOrigin": true,
+    "selfHandleResponse": false
+  },
+  "/uploads": {
+    "target": "https://localhost:7146",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

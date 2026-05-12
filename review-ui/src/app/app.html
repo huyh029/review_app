@@ -1,0 +1,31 @@
+<div *ngIf="isLoginPage" style="height: 100vh;">
+  <router-outlet></router-outlet>
+</div>
+
+<div *ngIf="!isLoginPage" style="display: grid;
+    grid-template-areas:
+      'sidebar header'
+      'sidebar content'
+      'sidebar footer';
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
+    transition: grid-template-columns 0.3s ease-in-out;
+">
+  <app-siderbar style="grid-area: sidebar;"></app-siderbar>
+
+  <app-header style="grid-area: header;"></app-header>
+
+  <div style="grid-area: content; overflow-y: auto;position: relative;">
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-pagination-footer 
+    *ngIf="showPaginationFooter"
+    style="grid-area: footer;"
+    (pageChange)="onPageChange($event)"
+    (itemsPerPageChange)="onItemsPerPageChange($event)">
+  </app-pagination-footer>
+</div>
+
+<app-toast></app-toast>

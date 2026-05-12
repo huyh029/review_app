@@ -1,0 +1,28 @@
+<div class="dropdown-container" #dropdownContainer>
+  <button 
+    type="button"
+    (click)="toggleDropdown()"
+    [disabled]="disabled"
+    class="relative h-[42px] w-full rounded-md bg-white py-2.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-[#276100] sm:text-sm sm:leading-6"
+    [class.cursor-default]="!disabled"
+    [class.cursor-not-allowed]="disabled"
+    [class.opacity-60]="disabled"
+    [class.ring-2]="isDropdownOpen"
+    [class.ring-[#276100]]="isDropdownOpen">
+    <span class="block truncate">{{ getSelectedName() }}</span>
+    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-gray-400" [class.rotate-180]="isDropdownOpen">
+        <path fill-rule="evenodd" d="M5.233 7.21a.75.75 0 011.06 0L10 10.939l3.707-3.728a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0l-4.25-4.25a.75.75 0 010-1.06z" clip-rule="evenodd"></path>
+      </svg>
+    </span>
+  </button>
+
+  <div *ngIf="isDropdownOpen" class="dropdown-menu">
+    <div class="dropdown-option" 
+      *ngFor="let option of options" 
+      [class.selected]="selectedValue === option.id"
+      (click)="selectOption(option)">
+      {{ option.name }}
+    </div>
+  </div>
+</div>

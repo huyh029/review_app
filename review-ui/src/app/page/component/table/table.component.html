@@ -1,0 +1,104 @@
+<div class="table-wrapper">
+  <!-- Selection Info -->
+  <div *ngIf="enableMultiSelect && totalSelectedCount > 0" 
+       class="bg-blue-100 border border-blue-300 rounded-md p-3 mb-4 flex items-center justify-center gap-2 text-sm">
+    <span class="text-blue-900">Đã chọn <strong>{{ totalSelectedCount }}</strong> mục.</span>
+    <button 
+      (click)="clearSelection()"
+      class="text-blue-600 hover:text-blue-800 font-semibold underline">
+      Xóa lựa chọn
+    </button>
+  </div>
+
+  <div class="table-content">
+    <div class="overflow-x-auto">
+      <table *ngIf="data.length > 0" class="w-full border-collapse border text-sm" style="border-color: rgb(209 213 219)">
+        <thead class="bg-white text-[#276100] uppercase text-sm text-center">
+          <!-- Header Row 1: Cột đơn (rowspan=2) + Cột nhóm (colspan) -->
+          <tr>
+            <th *ngIf="enableMultiSelect" 
+                rowspan="2"
+                class="p-4 border align-middle font-semibold w-12 bg-white text-[#276100]"
+                style="border-color: rgb(209 213 219)">
+              <input 
+                type="checkbox" 
+                [checked]="isAllChecked()"
+                [indeterminate]="isSomeChecked()"
+                (change)="toggleSelectAll()"
+                class="w-4 h-4 cursor-pointer">
+            </th>
+            <th *ngFor="let column of columns" 
+                [attr.rowspan]="!hasChildren(column) ? 2 : 1"
+                [attr.colspan]="hasChildren(column) ? getColspan(column) : 1"
+                class="p-4 border align-middle font-semibold bg-white text-[#276100]"
+                style="border-color: rgb(209 213 219)">
+              {{ column.label }}
+            </th>
+          </tr>
+
+          <!-- Header Row 2: Cột con của cột nhóm -->
+          <tr>
+            <ng-container *ngFor="let column of columns">
+              <ng-container *ngIf="hasChildren(column)">
+                <th *ngFor="let child of column.children" 
+                    class="p-4 border font-semibold normal-case bg-white text-[#276100]"
+                    style="border-color: rgb(209 213 219)">
+                  {{ child.label }}
+                </th>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </thead>
+
+        <!-- Body -->
+        <tbody>
+          <tr *ngFor="let row of data; let i = index" 
+              (click)="onRowClick(row)"
+              class="hover:bg-gray-50 cursor-pointer">
+            <td *ngIf="enableMultiSelect" class="p-4 border text-center w-12" style="border-color: rgb(209 213 219)" (click)="$event.stopPropagation()">
+              <input 
+                type="checkbox" 
+                [checked]="isRowChecked(row)"
+                [disabled]="!isRowSelectable(row)"
+                (change)="toggleRowSelection(i)"
+                class="w-4 h-4 cursor-pointer"
+                [class.opacity-50]="!isRowSelectable(row)"
+                [class.cursor-not-allowed]="!isRowSelectable(row)">
+            </td>
+            <ng-container *ngFor="let column of leafColumns">
+              <td class="p-4 border" 
+                  [ngClass]="getCellClass(column)"
+                  [ngStyle]="getCellStyle(column)"
+                  style="border-color: rgb(209 213 219)">
+                <ng-container *ngIf="isIconColumn(column)">
+                  <div class="flex gap-2 justify-center" (click)="$event.stopPropagation()">
+                    <button 
+                      *ngFor="let icon of getIconSvg(column, getValue(row, column.key)).split('|'); let actionIndex = index"
+                      (click)="onActionClick(row, actionIndex)"
+                      class="p-2 hover:bg-gray-100 rounded transition-colors"
+                      [innerHTML]="getSafeHtml(icon)">
+                    </button>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="!isIconColumn(column) && getWrapperElement(column) === 'div'">
+                  <div [ngStyle]="getBadgeStyle(getValue(row, column.key))">
+                    {{ getValue(row, column.key) }}
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="!isIconColumn(column) && getWrapperElement(column) !== 'div'">
+                  <span [ngClass]="getCellClass(column)" [ngStyle]="getCellStyle(column)">
+                    {{ getValue(row, column.key) }}
+                  </span>
+                </ng-container>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="data.length === 0" class="text-center py-8 text-gray-500">
+        Không có dữ liệu
+      </div>
+    </div>
+  </div>
+</div>

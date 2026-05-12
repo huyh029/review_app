@@ -1,0 +1,37 @@
+<div class="p-6">
+  <!-- Header -->
+  <div class="flex items-center gap-4 mb-6">
+    <span class="text-lg font-bold text-black">Gán vai trò đối tượng</span>
+    
+    <div class="flex-1"></div>
+    
+    <app-filter 
+      #filterComponent
+      [fields]="filterFields"
+      [searchPlaceholder]="'Tìm kiếm...'"
+      gap="gap-2"
+      [showLabel]="false"
+      searchMode="click"
+      (filterChange)="onFilterChange($event)">
+    </app-filter>
+    
+    <button 
+      (click)="onSave()"
+      [disabled]="saving"
+      class="flex h-[42px] items-center gap-2 px-4 py-2 bg-[#276100] text-white rounded-md hover:bg-[#1f4a00] transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <span>{{ saving ? 'Đang lưu...' : 'Lưu' }}</span>
+    </button>
+  </div>
+
+  <!-- Tree View -->
+  <app-tree-view 
+    [data]="treeData" 
+    [headers]="headers"
+    [evaluationObjectHeaders]="evaluationObjectHeaders"
+    [showZoom]="false"
+    (changeDetected)="onChangeDetected($event)">
+  </app-tree-view>
+</div>

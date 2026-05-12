@@ -1,0 +1,169 @@
+<div class="criteria-section">
+  <div class="total-score-info">
+    <div class="score-info-left">
+      <span>Nội dung đánh giá</span>
+    </div>
+    <div class="score-info-right">
+      <div class="dropdown-wrapper">
+        <button class="btn-action" (click)="toggleExcelDropdown()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Tải dữ liệu từ Excel
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dropdown-arrow" [class.open]="showExcelDropdown">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="dropdown-menu" *ngIf="showExcelDropdown">
+          <button class="dropdown-item" (click)="onExcelAction('download')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Tải mẫu
+          </button>
+          <button class="dropdown-item" (click)="onExcelAction('upload')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Tải lên
+          </button>
+        </div>
+      </div>
+      <button class="btn-action" (click)="onRegenerateCode()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+        Tạo lại mã
+      </button>
+      <button class="btn-action btn-primary" (click)="onAddRootCriteria()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Thêm tiêu chí góc
+      </button>
+    </div>
+  </div>
+
+  <div class="criteria-table">
+    <div class="table-header">
+      <div class="table-row">
+        <div class="table-cell drag-column"></div>
+        <div class="table-cell">Mã</div>
+        <div class="table-cell">Nội dung</div>
+        <div class="table-cell">Điểm tối đa</div>
+        <div class="table-cell">Loại điểm</div>
+        <div class="table-cell">Hành động</div>
+      </div>
+    </div>
+    <div class="table-body">
+      <ng-container *ngFor="let item of getVisibleItems()">
+        <div class="table-row" [class.parent-row]="isParentItem(item)" [class.danger-row]="item.scoreType === 'Điểm trừ'" [class.dragging]="item.isDragging" [class.drop-target-top]="dropTargetId === item.id && dropZonePosition === 'top'" [class.drop-target-bottom]="dropTargetId === item.id && dropZonePosition === 'bottom'" (dragover)="onDragOverRow($event, item)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event, item)" (mouseenter)="hoveredItemId = item.id ?? null" (mouseleave)="hoveredItemId = null" style="position: relative;">
+          <div class="table-cell drag-cell">
+            <div class="drag-handle" draggable="true" (dragstart)="onDragStart($event, item)" (dragend)="onDragEnd($event)" title="Kéo để sắp xếp">
+              <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
+                <circle cx="9" cy="5" r="1.5"></circle>
+                <circle cx="9" cy="12" r="1.5"></circle>
+                <circle cx="9" cy="19" r="1.5"></circle>
+                <circle cx="15" cy="5" r="1.5"></circle>
+                <circle cx="15" cy="12" r="1.5"></circle>
+                <circle cx="15" cy="19" r="1.5"></circle>
+              </svg>
+            </div>
+          </div>
+          <div class="table-cell editable-cell">
+            <div style="display: flex; align-items: center; gap: 4px;" [style.padding-left]="((item.level ?? 0) * 20) + 'px'">
+              <div class="expand-button-slot">
+                <button 
+                  *ngIf="item.children && item.children.length > 0"
+                  type="button" 
+                  class="btn-expand"
+                  (click)="toggleExpand(item)"
+                  [class.expanded]="item.expanded"
+                >
+                  <svg *ngIf="item.expanded" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500 transition-transform flex-shrink-0 rotate-90"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  <svg *ngIf="!item.expanded" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500 transition-transform flex-shrink-0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+              </div>
+              <input 
+                type="text" 
+                [(ngModel)]="item.code"
+                (blur)="finishEdit(item)"
+                (keyup.enter)="finishEdit(item)"
+                class="cell-input"
+                style="text-align: start;"
+                placeholder="--"
+              />
+            </div>
+          </div>
+          <div class="table-cell editable-cell">
+            <textarea 
+              [(ngModel)]="item.content"
+              (blur)="finishEdit(item)"
+              (keyup)="autoResizeTextarea($event)"
+              class="cell-textarea"
+              placeholder="Nhập nội dung tiêu chí"
+            ></textarea>
+          </div>
+          <div class="table-cell editable-cell">
+            <input 
+              type="number" 
+              [(ngModel)]="item.maxScore"
+              (blur)="finishEdit(item)"
+              (keyup.enter)="finishEdit(item)"
+              (keydown)="preventInvalidInput($event, item)"
+              (input)="validateMaxScoreInput(item)"
+              (paste)="validateMaxScoreInput(item)"
+              class="cell-input"
+              min="0"
+              max="100"
+              placeholder="--"
+            />
+          </div>
+          <div class="table-cell editable-cell" (click)="toggleScoreType(item)">
+            <span class="badge" [class.badge-success]="item.scoreType === 'Điểm cộng'" [class.badge-danger]="item.scoreType === 'Điểm trừ'">{{ item.scoreType }}</span>
+          </div>
+          <div class="table-cell editable-cell">
+            <span style="display: flex;" class="actions">
+                <button class="btn-icon btn-add-row" type="button" title="Thêm con" (click)="onAddChild(item)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <button class="btn-icon btn-danger" type="button" title="Xóa" (click)="onDelete(item.id)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+              </button>
+            </span>
+          </div>
+          <button *ngIf="hoveredItemId === item.id" class="btn-insert-row btn-insert-above" (click)="onInsertRowBefore(item)" title="Thêm hàng phía trên">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="insert-icon">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+          </button>
+          <button *ngIf="hoveredItemId === item.id" class="btn-insert-row btn-insert-below" (click)="onInsertRowAfter(item)" title="Thêm hàng phía dưới">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="insert-icon">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

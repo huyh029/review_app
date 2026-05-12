@@ -1,0 +1,164 @@
+<div class="p-6">
+  <!-- Header with Title, Filter, and Add Button -->
+  <div class="flex items-center gap-4 mb-6 justify-center">
+    <span class="text-lg font-bold text-black mr-auto">Danh sách đối tượng</span>
+    
+    <app-filter 
+      [fields]="filterFields"
+      [searchPlaceholder]="'Tìm kiếm đối tượng...'"
+      [searchMode]="'click'"
+      gap="gap-2"
+      [showLabel]="false"
+      (filterChange)="onFilterChange($event)">
+    </app-filter>
+    
+    <button 
+      *ngIf="deleteCount > 0"
+      (click)="onDelete()"
+      class="flex h-[42px] items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors whitespace-nowrap">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+      </svg>
+      <span>Xóa ({{ deleteCount }})</span>
+    </button>
+    
+    <button 
+      (click)="onAddNew()"
+      class="flex h-[42px] items-center gap-2 px-4 py-2 bg-[#276100] text-white rounded-md hover:bg-[#1f4a00] transition-colors whitespace-nowrap">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      </svg>
+      <span>Thêm mới</span>
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <app-table
+      #table
+      [columns]="columns"
+      [response]="tableResponse"
+      [enableMultiSelect]="true"
+      [rowIdKey]="'code'"
+      [isAll]="isAllSelected"
+      [includeIds]="includeIds"
+      [excludeIds]="excludeIds"
+      [totalSelectedCount]="deleteCount"
+      (selectionStateChange)="onSelectionStateChange($event)"
+      (rowActionClick)="onRowActionClick($event)"
+      (rowClick)="onEditRow($event)">
+    </app-table>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <app-confirmation-dialog
+    [isOpen]="showConfirmDialog"
+    title="Xác nhận xóa"
+    [message]="getDeleteMessage()"
+    cancelText="Hủy"
+    confirmText="Xóa"
+    (confirm)="onConfirmDelete()"
+    (cancel)="onCancelDelete()">
+  </app-confirmation-dialog>
+
+  <!-- Add New Form Modal -->
+  <div *ngIf="showFormDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-8 py-6 border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Chỉnh sửa đối tượng' : 'Thêm mới đối tượng' }}</h2>
+        <button 
+          (click)="onCloseForm()"
+          class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Form Content -->
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmitForm()" class="p-8 space-y-6">
+        <!-- Mã đối tượng -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">
+            Mã đối tượng <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            formControlName="code"
+            placeholder="VD: CNTDG"
+            [readonly]="isEditMode"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#276100] focus:border-transparent text-base"
+            [class.bg-gray-200]="isEditMode"
+            [class.cursor-not-allowed]="isEditMode">
+          <div *ngIf="formGroup.get('code')?.invalid && formGroup.get('code')?.touched" class="text-red-500 text-sm mt-1">
+            Mã đối tượng là bắt buộc
+          </div>
+        </div>
+
+        <!-- Tên đối tượng -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">
+            Tên đối tượng <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            formControlName="name"
+            placeholder="VD: Cá nhân tự đánh giá"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#276100] focus:border-transparent text-base">
+          <div *ngIf="formGroup.get('name')?.invalid && formGroup.get('name')?.touched" class="text-red-500 text-sm mt-1">
+            Tên đối tượng là bắt buộc
+          </div>
+        </div>
+
+        <!-- Trạng thái -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-800 mb-3">Trạng thái</label>
+          <div class="flex gap-8">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input 
+                type="radio" 
+                formControlName="status"
+                value="Kích hoạt"
+                class="w-5 h-5 accent-[#276100]">
+              <span class="text-base text-gray-800">Kích hoạt</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input 
+                type="radio" 
+                formControlName="status"
+                value="Khóa"
+                class="w-5 h-5 accent-red-500">
+              <span class="text-base text-gray-800">Khóa</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-3 justify-between pt-6 border-t border-gray-200">
+          <button 
+            *ngIf="isEditMode"
+            type="button"
+            (click)="onDeleteEdit()"
+            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
+            Xóa
+          </button>
+          <div class="flex gap-3 ml-auto">
+            <button 
+              type="button"
+              (click)="onCloseForm()"
+              class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+              Hủy
+            </button>
+            <button 
+              type="submit"
+              [disabled]="formGroup.invalid"
+              class="px-6 py-2 bg-[#276100] text-white rounded-lg hover:bg-[#1f4a00] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+              {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

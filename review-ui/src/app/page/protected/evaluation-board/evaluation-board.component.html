@@ -1,0 +1,30 @@
+<div class="p-6">
+  <!-- Tabs -->
+  <div class="flex gap-2 mb-6 border-b border-gray-200 relative">
+    <button 
+      *ngFor="let tab of tabs"
+      (click)="selectTab(tab.type)"
+      [class.text-[#276100]]="activeTab === tab.type"
+      [class.text-gray-600]="activeTab !== tab.type"
+      class="px-4 py-2 font-medium transition-colors relative">
+      {{ tab.label }}
+      <span 
+        *ngIf="activeTab === tab.type"
+        class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#276100] tab-underline">
+      </span>
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="bg-white rounded-lg">
+    <div *ngIf="activeTab === 'self'">
+      <app-self-evaluation></app-self-evaluation>
+    </div>
+    <div *ngIf="activeTab === 'manager'">
+      <app-manager-evaluation></app-manager-evaluation>
+    </div>
+    <div *ngIf="activeTab === 'result'">
+      <app-result-evaluation></app-result-evaluation>
+    </div>
+  </div>
+</div>

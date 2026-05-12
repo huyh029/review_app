@@ -1,0 +1,207 @@
+<div class="p-6">
+  <!-- Header with title and buttons -->
+  <div class="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
+    <div class="flex items-center gap-3">
+      <button 
+        type="button"
+        (click)="onCancel()"
+        class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-6 h-6 text-gray-600">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      <h2 class="text-xl font-semibold text-gray-800">{{ isEditMode ? 'Chỉnh sửa luồng đánh giá' : 'Thêm mới luồng đánh giá' }}</h2>
+    </div>
+    <div class="flex gap-3">
+      <button 
+        type="button"
+        (click)="onCancel()"
+        class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+        Hủy
+      </button>
+      <button 
+        *ngIf="isEditMode"
+        type="button"
+        (click)="onDelete()"
+        class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium">
+        Xóa
+      </button>
+      <button 
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="formGroup.invalid"
+        class="px-6 py-2 bg-[#276100] text-white rounded-lg hover:bg-[#1f4a00] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+        {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="space-y-6 overflow-visible">
+    <!-- Mã luồng và Tên luồng nằm ngang -->
+    <div class="grid grid-cols-2 gap-6">
+      <!-- Mã luồng -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-800 mb-2">
+          Mã luồng <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          formControlName="code"
+          placeholder="Nhập mã luồng"
+          [readonly]="isEditMode"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#276100] focus:border-transparent text-base"
+          [class.bg-gray-200]="isEditMode"
+          [class.cursor-not-allowed]="isEditMode">
+        <div *ngIf="formGroup.get('code')?.invalid && formGroup.get('code')?.touched" class="text-red-500 text-sm mt-1">
+          Mã luồng là bắt buộc
+        </div>
+      </div>
+
+      <!-- Tên luồng -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-800 mb-2">
+          Tên luồng <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          formControlName="name"
+          placeholder="Nhập tên luồng"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#276100] focus:border-transparent text-base">
+        <div *ngIf="formGroup.get('name')?.invalid && formGroup.get('name')?.touched" class="text-red-500 text-sm mt-1">
+          Tên luồng là bắt buộc
+        </div>
+      </div>
+    </div>
+
+    <!-- Tiêu chí đánh giá -->
+    <div>
+      <label class="block text-sm font-semibold text-gray-800 mb-2">
+        Tiêu chí đánh giá <span class="text-red-500">*</span>
+      </label>
+      <app-dropdown-checkbox-multi
+        [options]="criteriaOptions"
+        [selectedValues]="selectedCriteria"
+        placeholder="Chọn tiêu chí đánh giá"
+        [columns]="1"
+        (selectionChange)="onCriteriaChange($event)">
+      </app-dropdown-checkbox-multi>
+    </div>
+
+    <!-- Phòng ban áp dụng -->
+    <div>
+      <label class="block text-sm font-semibold text-gray-800 mb-4">
+        Phòng ban áp dụng <span class="text-red-500">*</span>
+      </label>
+
+      <!-- Border bao quanh cả header và bảng -->
+      <div class="border border-gray-300 rounded-lg p-6">
+        <!-- Header: Số đơn vị đã chọn và nút lựa chọn -->
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-sm text-gray-600">
+            Đã chọn <strong>{{ departmentTableResponse.data?.length || 0 }}</strong> đơn vị.
+          </div>
+          <button 
+            type="button"
+            (click)="onOpenDepartmentModal()"
+            class="px-4 py-2 border border-[#276100] text-[#276100] rounded-lg hover:bg-[#276100] hover:text-white transition-colors font-medium">
+            Lựa chọn đơn vị áp dụng
+          </button>
+        </div>
+
+        <!-- Bảng danh sách phòng ban -->
+        <div class="border-0">
+          <app-table
+            [columns]="departmentColumns"
+            [response]="departmentTableResponse"
+            [enableMultiSelect]="false">
+          </app-table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trạng thái -->
+    <div>
+      <label class="block text-sm font-semibold text-gray-800 mb-3">Trạng thái</label>
+      <div class="border border-gray-300 rounded-lg p-6">
+        <div class="flex gap-8">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input 
+              type="radio" 
+              formControlName="status"
+              value="Kích hoạt"
+              class="w-5 h-5 accent-[#276100]">
+            <span class="text-base text-gray-800">Kích hoạt</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input 
+              type="radio" 
+              formControlName="status"
+              value="Khóa"
+              class="w-5 h-5 accent-red-500">
+            <span class="text-base text-gray-800">Khóa</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cây vai trò đánh giá -->
+    <div class="overflow-visible">
+      <div class="flex items-center justify-between mb-4">
+        <label class="block text-sm font-semibold text-gray-800">
+          Vai trò đánh giá <span class="text-red-500">*</span>
+        </label>
+        <button 
+          type="button"
+          (click)="onAddRootRole()"
+          class="px-4 py-2 bg-[#276100] text-white rounded-lg hover:bg-[#1f4a00] transition-colors font-medium flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Thêm mới
+        </button>
+      </div>
+      <app-evaluation-tree
+        [items]="roleTreeData"
+        [itemType]="'role'"
+        [availableItems]="roleAvailableItems"
+        (addItem)="onAddRole($event)"
+        (deleteItem)="onDeleteRole($event)"
+        (toggleNode)="onToggleNode($event)"
+        (handleDrop)="onHandleDrop($event)">
+      </app-evaluation-tree>
+    </div>
+
+    <!-- Cây đối tượng đánh giá -->
+    <div class="overflow-visible">
+      <div class="flex items-center justify-between mb-4">
+        <label class="block text-sm font-semibold text-gray-800">
+          Đối tượng đánh giá <span class="text-red-500">*</span>
+        </label>
+        <button 
+          type="button"
+          (click)="onAddRootObject()"
+          class="px-4 py-2 bg-[#276100] text-white rounded-lg hover:bg-[#1f4a00] transition-colors font-medium flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Thêm mới
+        </button>
+      </div>
+      <app-evaluation-tree
+        [items]="objectTreeData"
+        [itemType]="'object'"
+        [availableItems]="objectAvailableItems"
+        (addItem)="onAddObject($event)"
+        (deleteItem)="onDeleteObject($event)"
+        (toggleNode)="onToggleObjectNode($event)"
+        (handleDrop)="onHandleObjectDrop($event)">
+      </app-evaluation-tree>
+    </div>
+
+<!-- Department Selection Sidebar Component -->
+<app-department-selection
+  [isOpen]="showDepartmentModal"
+  [departments]="departmentTreeData"
+  (close)="onCloseDepartmentModal()"
+  (confirm)="onConfirmDepartmentSelection($event)">
+</app-department-selection>

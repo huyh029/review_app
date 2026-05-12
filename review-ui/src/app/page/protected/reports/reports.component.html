@@ -1,0 +1,22 @@
+<div class="p-6">
+  <!-- Filter and Download Button -->
+    <div class="flex-1">
+      <app-filter 
+        [fields]="filterFields"
+        [searchPlaceholder]="'Tìm trong báo cáo...'"
+        searchMode="click"
+        (filterChange)="onFilterChange($event)">
+      </app-filter>
+    </div>
+    
+    <!-- Download Button Component -->
+    <app-download-button style="display: flex;align-items: end;justify-content: end;"></app-download-button>
+
+  <div class="bg-white rounded-lg shadow p-6 mt-6">
+    <app-table 
+      [columns]="tableColumns"
+      [response]="tableResponse"
+      [enableMultiSelect]="false">
+    </app-table>
+  </div>
+</div>

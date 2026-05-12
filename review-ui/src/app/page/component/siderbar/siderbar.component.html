@@ -1,0 +1,61 @@
+<nav 
+  class="bg-[#276100] text-white shadow-lg overflow-hidden print:hidden h-screen flex flex-col transition-all duration-300 ease-in-out"
+  [class.w-0]="!sidebarOpen"
+  [class.w-64]="sidebarOpen"
+  [style.padding]="sidebarOpen ? '1.5rem' : '0'"
+>
+  <div class="whitespace-nowrap flex flex-col h-full" [class.hidden]="!sidebarOpen">
+    <!-- Header -->
+    <div class="text-2xl font-semibold mb-10 text-center">Bảng điều khiển</div>
+
+    <!-- Menu -->
+    <ul class="space-y-2 flex-1 overflow-y-auto">
+      <!-- Main menu items -->
+      <li *ngFor="let item of menuItems">
+        <a 
+          [routerLink]="item.route"
+          (click)="onMenuItemClick(item.label)"
+          routerLinkActive="bg-[#1e4900]"
+          class="cursor-pointer flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-[#1e4900]"
+        >
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+
+      <!-- Configuration menu -->
+      <li>
+        <button 
+          (click)="toggleConfig()"
+          [class.bg-[#1e4900]]="configExpanded"
+          class="w-full flex justify-between items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-[#1e4900]"
+        >
+          <span>Cấu hình</span>
+          <svg 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="w-4 h-4 transition-transform duration-200"
+            [class.rotate-90]="configExpanded"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+
+        <!-- Submenu -->
+        <ul *ngIf="configExpanded" class="mt-2 space-y-1 pl-4 animate-fade-in">
+          <li *ngFor="let item of submenuItems">
+            <a 
+              [routerLink]="item.route"
+              (click)="onMenuItemClick(item.label)"
+              routerLinkActive="bg-[#1e4900]"
+              class="cursor-pointer block py-2 px-3 rounded text-sm transition-colors duration-200 hover:bg-[#1e4900]"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

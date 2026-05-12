@@ -1,0 +1,17 @@
+/* Evaluation board component styles */
+
+.tab-underline {
+  animation: slideUnderline 0.3s ease-in-out;
+  transform-origin: left;
+}
+
+@keyframes slideUnderline {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
