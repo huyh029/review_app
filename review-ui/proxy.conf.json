@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://127.0.0.1:7146",
+    "target": "https://192.168.1.6:7146",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
@@ -8,13 +8,13 @@
     }
   },
   "/api/page/evaluation-board/comments/files": {
-    "target": "https://127.0.0.1:7146",
+    "target": "https://192.168.1.6:7146",
     "secure": false,
     "changeOrigin": true,
     "selfHandleResponse": false
   },
   "/uploads": {
-    "target": "https://127.0.0.1:7146",
+    "target": "https://192.168.1.6:7146",
     "secure": false,
     "changeOrigin": true
   }
